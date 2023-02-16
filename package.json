@@ -2,9 +2,9 @@
   "name": "vsc-plugin-e-reader",
   "displayName": "摸鱼Reader",
   "description": "novel reader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.27.0"
   },
   "categories": [
     "Other"
@@ -59,14 +59,14 @@
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
+    "@types/iconv-lite": "^0.0.1",
     "@types/mocha": "^10.0.0",
     "@types/node": "16.x",
     "@types/node-fetch": "^2.6.2",
-    "@types/vscode": "^1.75.1",
+    "@types/vscode": "1.27",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "@vscode/test-electron": "^2.2.0",
-    "@types/iconv-lite": "^0.0.1",
     "eslint": "^8.26.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
