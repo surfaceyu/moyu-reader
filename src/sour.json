@@ -1,0 +1,31 @@
+[
+    {
+        "bookSourceComment": "Ginkgo",
+        "bookSourceName": "笔尖中文",
+        "bookSourceUrl": "https://www.biquzw.la/",
+        "ruleContent": {
+          "content": "#content",
+          "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
+          "sourceRegex": "",
+          "webJs": "",
+          "url": "https://www.xbiquwx.la/{{bookId}}/{{chapterId}}.html"
+        },
+        "ruleSearch": {
+          "author": "td.odd:eq(1)",
+          "bookList": ".grid tbody > tr",
+          "bookUrl": "td.odd > a[href]",
+          "bookIdReg": "\\/([^\\/]+)\\/$",
+          "name": "td.odd > a",
+          "wordCount": "td.even:eq(1)"
+        },
+        "ruleToc": {
+          "chapterList": "#list dd",
+          "chapterName": "a",
+          "chapterUrl": "href",
+          "chapterIdReg": "^(.+)\\.html$",
+          "url": "https://www.xbiquwx.la/{{bookId}}"
+        },
+        "searchUrl": "https://www.xbiquwx.la/modules/article/search.php?searchkey={{key}}",
+        "weight": 0
+      }
+  ]
