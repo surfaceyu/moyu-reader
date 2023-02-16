@@ -52,8 +52,12 @@ export namespace render {
                 return;
             }
 
-            vscode.workspace.openTextDocument(filePath).then((doc) => {
-                vscode.window.showTextDocument(doc);
+            vscode.workspace.openTextDocument(filePath).then(document => {
+                vscode.window.showTextDocument(document).then(editor => {
+                    let firstLine = editor.document.lineAt(0);
+                    let firstLineRange = new vscode.Range(firstLine.range.start, firstLine.range.start);
+                    editor.revealRange(firstLineRange, vscode.TextEditorRevealType.AtTop);
+                });
             });
         });
     }
@@ -118,10 +122,14 @@ function factorial(n: number): number {
         const regex = /\/\*\*[^]*?\*\//g; // 匹配多行注释
         let matches = code.match(regex) || []; // 所有注释的匹配结果数组
         let codeCopy = code; // 复制一份代码
-        for (let j = 0; j < matches.length && i < strings.length; j++) {
+        for (let j = 0; j < matches.length; j++) {
             // 替换注释
-            codeCopy = codeCopy.replace(matches[j], "// " + strings[i]);
-            i++;
+            if (i <  strings.length) {
+                codeCopy = codeCopy.replace(matches[j], "// " + strings[i]);
+                i++;                
+            } else {
+                codeCopy = codeCopy.replace(matches[j], "");
+            }
         }
         if (i < strings.length) {
             return codeCopy + insertComments(strings, code, i);
