@@ -1,31 +1,60 @@
 [
     {
-        "bookSourceComment": "Ginkgo",
+        "bookSourceComment": "biquzw",
         "bookSourceName": "笔尖中文",
         "bookSourceUrl": "https://www.biquzw.la/",
         "ruleContent": {
-          "content": "#content",
-          "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
-          "sourceRegex": "",
-          "webJs": "",
-          "url": "https://www.xbiquwx.la/{{bookId}}/{{chapterId}}.html"
+            "content": "#content",
+            "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
+            "sourceRegex": "",
+            "webJs": "",
+            "url": "https://www.xbiquwx.la/{{bookId}}/{{chapterId}}.html"
         },
         "ruleSearch": {
-          "author": "td.odd:eq(1)",
-          "bookList": ".grid tbody > tr",
-          "bookUrl": "td.odd > a[href]",
-          "bookIdReg": "\\/([^\\/]+)\\/$",
-          "name": "td.odd > a",
-          "wordCount": "td.even:eq(1)"
+            "author": "td.odd:eq(1)",
+            "bookList": ".grid tbody > tr",
+            "bookUrl": "td.odd > a[href]",
+            "bookIdReg": "\\/([^\\/]+)\\/$",
+            "name": "td.odd > a",
+            "wordCount": "td.even:eq(1)"
         },
         "ruleToc": {
-          "chapterList": "#list dd",
-          "chapterName": "a",
-          "chapterUrl": "href",
-          "chapterIdReg": "^(.+)\\.html$",
-          "url": "https://www.xbiquwx.la/{{bookId}}"
+            "chapterList": "#list dd",
+            "chapterName": "a",
+            "chapterUrl": "href",
+            "chapterIdReg": "^(.+)\\.html$",
+            "url": "https://www.xbiquwx.la/{{bookId}}"
         },
         "searchUrl": "https://www.xbiquwx.la/modules/article/search.php?searchkey={{key}}",
         "weight": 0
-      }
-  ]
+    },
+    {
+        "bookSourceComment": "81zw",
+        "bookSourceName": "八一中文",
+        "bookSourceUrl": "https://www.81zw.com/",
+        "ruleContent": {
+            "content": "#content",
+            "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
+            "sourceRegex": "",
+            "webJs": "",
+            "url": "https://www.81zw.com/{{chapterId}}.html"
+        },
+        "ruleSearch": {
+            "author": ".result-game-item-detail > div > p:nth-child(1) > span:nth-child(2)",
+            "bookList": ".result-item.result-game-item",
+            "bookUrl": ".result-item-title.result-game-item-title a.result-game-item-title-link[href]",
+            "bookIdReg": "\\/([^\\/]+)\\/$",
+            "name": ".result-item-title.result-game-item-title a.result-game-item-title-link",
+            "wordCount": "td.even:eq(1)"
+        },
+        "ruleToc": {
+            "chapterList": "#list dd",
+            "chapterName": "a",
+            "chapterUrl": "href",
+            "chapterIdReg": "^(.+)\\.html$",
+            "url": "https://www.81zw.com/book/{{bookId}}"
+        },
+        "searchUrl": "https://www.81zw.com/search.php?keyword={{key}}",
+        "weight": 0
+    }
+]

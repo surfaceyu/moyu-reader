@@ -17,15 +17,24 @@ export async function searchOnline() {
     if (!bookName) {
         return;
     }
-
+    const sourceId = 1;
     // toFix 多个源 依次插入
-    source.forEach(async (it, id) => {
-        if (!it.searchUrl) { return; }
+    let bookList: TreeNode[] = [];
+    // source.forEach(async (it, id) => {
+    //     if (!it.searchUrl) { return; }
+    //     try {
+    //         const books = await search(bookName, sourceId);
+    //         bookList.push(...books);
+    //     } catch (error) { }
+    // });
+    for (let id = 0; id < source.length; id++) {
+        const it = source[id];
         try {
             const books = await search(bookName, id);
-            treeDataProvider.setData(books).refresh();
+            bookList.push(...books);
         } catch (error) { }
-    });
+    }
+    treeDataProvider.setData(bookList).refresh();
 };
 
 export async function openReaderView(node: TreeNode) {

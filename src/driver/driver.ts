@@ -16,12 +16,12 @@ export async function search(bookName: string, id: number): Promise<TreeNode[]> 
         const bookUrl = $(element).find(rule.bookUrl).attr('href') || "";
         const match = bookUrl.match(rule.bookIdReg);
         const bookId = match ? match[1] : 0;
-        const name = $(element).find(rule.name).text();
+        const name = $(element).find(rule.name).text().replace(/\n/g, "");
         const wordCount = $(element).find(rule.wordCount).text();
         if (0 === bookId) {
             return;
         }
-        bookList.push(new TreeNode({ name: `${name}-${author}-${wordCount}`, author, wordCount, ruleId: id, bookId }, vscode.TreeItemCollapsibleState.Collapsed));
+        bookList.push(new TreeNode({ name: `${name}-${author}-${sourceItem.bookSourceComment}`, author, wordCount, ruleId: id, bookId }, vscode.TreeItemCollapsibleState.Collapsed));
     });
 
     return bookList;

@@ -94,7 +94,7 @@ function factorial(n: number): number {
 `;
 
     function splitSentences(str: string): string[] {
-        const regex = /(.+?)([\.\?!。]+|$)/g;
+        const regex = /(.+?)([\?!。]+|$)/g;
         const sentences = str.match(regex) || [];
         const result: string[] = [];
 
