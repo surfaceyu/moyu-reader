@@ -4,13 +4,20 @@
 
 ### 0.0.1
 
-Initial release of ... 摸鱼阅读插件
+摸鱼阅读插件
+
+### 0.0.4
+
+新增八一中文网书源
+
+### 0.0.5
+
+中文短句增加中文？！
 
 ---
 
-## For more information
+## Github
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+* [moyu-reader](https://github.com/surfaceyu/moyu-reader) 欢迎前来交流
 
 **Enjoy!**
