@@ -2,6 +2,8 @@
 
 本插件从网络上下载小说 并将其隐藏在typescript的注释中，完美摸鱼
 
+![参考示例](/static/images/example.png "参考示例")
+
 ### 0.0.1
 
 摸鱼阅读插件
