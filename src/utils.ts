@@ -65,16 +65,37 @@ export namespace render {
     const tsCode = `
 /** 这是一个加法函数 */
 function add(x: number, y: number): number {
-  /** 将两个数相加 */
   const sum = x + y;
 
   /** 返回结果 */
   return sum;
 }
 
+interface Admin {
+    name: string;
+    privileges: string[];
+  }
+  
+  interface Employee {
+    name: string;
+    startDate: Date;
+  }
+  
+  type UnknownEmployee = Employee | Admin;
+  
+  /** printEmployeeInformation */
+  function printEmployeeInformation(emp: UnknownEmployee) {
+    console.log("Name: " + emp.name);
+    if ("privileges" in emp) {
+      console.log("Privileges: " + emp.privileges);
+    }
+    if ("startDate" in emp) {
+      console.log("Start Date: " + emp.startDate);
+    }
+  }
+
 /** 这是一个乘法函数 */
 function multiply(x: number, y: number): number {
-  /** 将两个数相乘 */
   const product = x * y;
 
   /** 返回结果 */
@@ -83,13 +104,24 @@ function multiply(x: number, y: number): number {
 
 /** 这是一个计算阶乘的函数 */
 function factorial(n: number): number {
-  /** 如果n小于等于1，直接返回1 */
   if (n <= 1) {
     return 1;
   }
 
   /** 否则，递归调用函数计算n-1的阶乘，并将结果与n相乘 */
   return n * factorial(n - 1);
+}
+type Foo = string | number;
+
+function controlFlowAnalysisWithNever(foo: Foo) {
+  if (typeof foo === "string") {
+    /** 这里 foo 被收窄为 string 类型 */
+  } else if (typeof foo === "number") {
+    /** 这里 foo 被收窄为 number 类型 */
+  } else {
+    /** foo 在这里是 never */
+    const check: never = foo;
+  }
 }
 `;
 
