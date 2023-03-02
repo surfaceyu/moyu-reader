@@ -5,3 +5,5 @@ export enum Commands {
     "onNextClick" = "vsc-plugin-e-reader.command.onNextClick",
     "onPrevClick" = "vsc-plugin-e-reader.command.onPrevClick",
 };
+
+export const DEBUG = false;

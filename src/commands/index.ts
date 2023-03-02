@@ -4,7 +4,7 @@ import { getContent, search } from '../driver/driver';
 import { treeDataProvider } from '../treeExplorer/bookTreeDataProvider';
 import { TreeNode } from '../treeExplorer/treeNode';
 import { render } from '../utils';
-import { Commands } from '../config';
+import { Commands, DEBUG } from '../config';
 
 export async function searchOnline() {
     const bookName = await vscode.window.showInputBox({
@@ -17,22 +17,19 @@ export async function searchOnline() {
     if (!bookName) {
         return;
     }
-    const sourceId = 1;
-    // toFix 多个源 依次插入
     let bookList: TreeNode[] = [];
-    // source.forEach(async (it, id) => {
-    //     if (!it.searchUrl) { return; }
-    //     try {
-    //         const books = await search(bookName, sourceId);
-    //         bookList.push(...books);
-    //     } catch (error) { }
-    // });
-    for (let id = 0; id < source.length; id++) {
-        const it = source[id];
+    if (DEBUG) {
         try {
-            const books = await search(bookName, id);
+            const books = await search(bookName, 0);
             bookList.push(...books);
         } catch (error) { }
+    } else {
+        for (let id = 0; id < source.length; id++) {
+            try {
+                const books = await search(bookName, id);
+                bookList.push(...books);
+            } catch (error) { }
+        }
     }
     treeDataProvider.setData(bookList).refresh();
 };

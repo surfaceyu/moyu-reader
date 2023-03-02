@@ -1,5 +1,34 @@
 [
     {
+        "bookSourceComment": "BiQuSoSo",
+        "bookSourceName": "笔趣SoSo",
+        "bookSourceUrl": "https://so.biqusoso.com",
+        "ruleContent": {
+            "url": "http://www.qu-la.com/booktxt/{{bookId}}116/{{chapterId}}.html",
+            "content": "#txt",
+            "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
+            "sourceRegex": "",
+            "webJs": ""
+        },
+        "ruleSearch": {
+            "bookList": "ul > li:not(:first-child)",
+            "author": ".s4",
+            "bookUrl": ".s2 > a[href]",
+            "bookIdReg": "(\\d+)\\b",
+            "name": ".s2",
+            "wordCount": ""
+        },
+        "ruleToc": {
+            "url": "http://www.qu-la.com/booktxt/{{bookId}}116",
+            "chapterList": "ul.cf:nth-of-type(2) li",
+            "chapterName": "a",
+            "chapterUrl": "href",
+            "chapterIdReg": "(\\d+)\\.html$"
+        },
+        "searchUrl": "https://so.biqusoso.com/s.php?ie=utf-8&siteid=qu-la.com&q={{key}}",
+        "weight": 0
+    },
+    {
         "bookSourceComment": "biquzw",
         "bookSourceName": "笔尖中文",
         "bookSourceUrl": "https://www.biquzw.la/",
