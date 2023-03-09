@@ -1,5 +1,34 @@
 [
     {
+        "bookSourceComment": "00Shu",
+        "bookSourceName": "00书",
+        "bookSourceUrl": "https://www.00shu.com",
+        "ruleSearch": {
+            "bookList": "tbody #nr",
+            "author": "td.odd:eq(1)",
+            "bookUrl": "td.odd > a[href]",
+            "bookIdReg": "",
+            "name": "td.odd > a[href]",
+            "wordCount": ""
+        },
+        "ruleToc": {
+            "url": "{{bookId}}/",
+            "chapterList": "#list dd",
+            "chapterName": "a",
+            "chapterUrl": "href",
+            "chapterIdReg": ""
+        },
+        "ruleContent": {
+            "url": "https://www.00shu.com/{{chapterId}}",
+            "content": "#content",
+            "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
+            "sourceRegex": "",
+            "webJs": ""
+        },
+        "searchUrl": "https://www.00shu.com/modules/article/search.php?q={{key}}",
+        "weight": 0
+    },
+    {
         "bookSourceComment": "BiQuSoSo",
         "bookSourceName": "笔趣SoSo",
         "bookSourceUrl": "https://so.biqusoso.com",

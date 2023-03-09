@@ -7,18 +7,22 @@ import { utils } from '../utils';
 export async function search(bookName: string, id: number): Promise<TreeNode[]> {
     const sourceItem = source[id];
     const searchUrl = utils.addUrlPrefix(sourceItem.searchUrl, sourceItem.bookSourceUrl).replace('{{key}}', encodeURIComponent(bookName));
-    const $ = cheerio.load(await utils.fetchWithCharset(searchUrl));
+    const html = await utils.fetchWithCharset(searchUrl);
+    const $ = cheerio.load(html);
     const rule = utils.getSearchRule(id);
 
     const bookList: TreeNode[] = [];
     $(rule.bookList).each((index, element) => {
         const author = $(element).find(rule.author).text();
         const bookUrl = $(element).find(rule.bookUrl).attr('href') || "";
-        const match = bookUrl.match(rule.bookIdReg);
-        const bookId = match ? match[1] : 0;
+        let bookId = bookUrl;
+        if (rule.bookIdReg) {
+            const match = bookUrl.match(rule.bookIdReg);
+            bookId = match ? match[1] : "0";
+        }
         const name = $(element).find(rule.name).text().replace(/\n/g, "");
         const wordCount = $(element).find(rule.wordCount).text();
-        if (0 === bookId) {
+        if ("0" === bookId) {
             return;
         }
         bookList.push(new TreeNode({ name: `${name}-${author}-${sourceItem.bookSourceComment}`, author, wordCount, ruleId: id, bookId }, vscode.TreeItemCollapsibleState.Collapsed));
@@ -28,15 +32,18 @@ export async function search(bookName: string, id: number): Promise<TreeNode[]> 
 }
 
 export async function getChapter(node: TreeNode): Promise<TreeNode[]> {
-    const $ = cheerio.load(await utils.fetchWithCharset(node.path));
+    const html = await utils.fetchWithCharset(node.path);
+    const $ = cheerio.load(html);
     const rule = utils.getChapterRule(node.ruleId);
 
     let chapters: TreeNode[] = [];
     $(rule.chapterList).each((index, element) => {
         const chapterUrl = $(element).find(rule.chapterName).attr(rule.chapterUrl) || "";
-        const match = chapterUrl.match(rule.chapterIdReg);
-        const chapterId = match ? match[1] : 0;
-
+        let chapterId = chapterUrl;
+        if (rule.chapterIdReg) {
+            const match = chapterUrl.match(rule.chapterIdReg);
+            chapterId = match ? match[1] : "0";
+        }
         let chapter = new TreeNode({
             parent: node,
             name: $(element).find(rule.chapterName).text(),
