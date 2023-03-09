@@ -23,8 +23,8 @@ export class BookTreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
 
     getTreeItem(element: TreeNode): vscode.TreeItem {
         return {
-            label: element.name,
-            tooltip: element.name,
+            label: element.text,
+            tooltip: element.text,
             iconPath: '',
             collapsibleState: element.collapsibleState,
             command: element.collapsibleState === vscode.TreeItemCollapsibleState.None ? element.previewCommand : undefined
@@ -35,7 +35,8 @@ export class BookTreeDataProvider implements vscode.TreeDataProvider<TreeNode> {
         if (!element) {
             return this.books;
         }
-        return await getChapter(element);
+        // return await getChapter(element);
+        return await element.getChildren();
     }
 
     refresh(): void {

@@ -1,17 +1,18 @@
 import * as vscode from 'vscode';
 import * as cheerio from 'cheerio';
-import { TreeNode } from "../treeExplorer/treeNode";
+import { BookChapterTreeNode, BookNameTreeNode, TreeNode } from "../treeExplorer/treeNode";
 import * as source from '../sour.json';
 import { utils } from '../utils';
+import { Book } from '../treeExplorer/entity';
 
-export async function search(bookName: string, id: number): Promise<TreeNode[]> {
+export async function search(bookName: string, id: number): Promise<Book[]> {
     const sourceItem = source[id];
     const searchUrl = utils.addUrlPrefix(sourceItem.searchUrl, sourceItem.bookSourceUrl).replace('{{key}}', encodeURIComponent(bookName));
     const html = await utils.fetchWithCharset(searchUrl);
     const $ = cheerio.load(html);
     const rule = utils.getSearchRule(id);
 
-    const bookList: TreeNode[] = [];
+    const bookList: Book[] = [];
     $(rule.bookList).each((index, element) => {
         const author = $(element).find(rule.author).text();
         const bookUrl = $(element).find(rule.bookUrl).attr('href') || "";
@@ -25,9 +26,8 @@ export async function search(bookName: string, id: number): Promise<TreeNode[]> 
         if ("0" === bookId) {
             return;
         }
-        bookList.push(new TreeNode({ name: `${name}-${author}-${sourceItem.bookSourceComment}`, author, wordCount, ruleId: id, bookId }, vscode.TreeItemCollapsibleState.Collapsed));
+        bookList.push(new Book(name, author, bookId, wordCount, id));
     });
-
     return bookList;
 }
 
@@ -36,7 +36,7 @@ export async function getChapter(node: TreeNode): Promise<TreeNode[]> {
     const $ = cheerio.load(html);
     const rule = utils.getChapterRule(node.ruleId);
 
-    let chapters: TreeNode[] = [];
+    let chapters: BookChapterTreeNode[] = [];
     $(rule.chapterList).each((index, element) => {
         const chapterUrl = $(element).find(rule.chapterName).attr(rule.chapterUrl) || "";
         let chapterId = chapterUrl;
@@ -44,14 +44,8 @@ export async function getChapter(node: TreeNode): Promise<TreeNode[]> {
             const match = chapterUrl.match(rule.chapterIdReg);
             chapterId = match ? match[1] : "0";
         }
-        let chapter = new TreeNode({
-            parent: node,
-            name: $(element).find(rule.chapterName).text(),
-            chapterId: chapterId,
-            ruleId: node.ruleId,
-        }, vscode.TreeItemCollapsibleState.None);
+        let chapter = new BookChapterTreeNode($(element).find(rule.chapterName).text(), node.ruleId, node.bookId, chapterId, node);
         chapters.push(chapter);
-
         node.addChildren(chapter);
     });
     return chapters;
@@ -63,6 +57,6 @@ export async function getContent(node: TreeNode): Promise<string> {
 
     const rule = utils.getContentRule(node.ruleId);
     const content = $(rule.content).text();
-    return `${node.name}。\n${content}`;
+    return `${node.text}。\n${content}`;
 }
 

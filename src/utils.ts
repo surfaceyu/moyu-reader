@@ -28,7 +28,7 @@ export namespace utils {
     }
 
     export async function fetchWithCharset(url: string): Promise<string> {
-        const response = await fetch(url);
+        const response = await fetch(url, {timeout: 10*1000});
         const buffer = await response.buffer();
         const contentType = response.headers.get('content-type');
         const charsetMatch = contentType ? contentType.match(/charset=(.*)/i) : "";

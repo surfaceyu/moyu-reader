@@ -2,9 +2,10 @@ import * as vscode from 'vscode';
 import * as source from '../sour.json';
 import { getContent, search } from '../driver/driver';
 import { treeDataProvider } from '../treeExplorer/bookTreeDataProvider';
-import { TreeNode } from '../treeExplorer/treeNode';
+import { BookNameTreeNode, BookSiteTreeNode, TreeNode } from '../treeExplorer/treeNode';
 import { render } from '../utils';
 import { Commands, DEBUG } from '../config';
+import { Book } from '../treeExplorer/entity';
 
 export async function searchOnline() {
     const bookName = await vscode.window.showInputBox({
@@ -17,11 +18,14 @@ export async function searchOnline() {
     if (!bookName) {
         return;
     }
-    let bookList: TreeNode[] = [];
+    let bookList: Book[] = [];
+    // 
+    // bookNameCollect 以string为key TreeNode数组为value的map
+    const bookNameCollect = new Map<string, TreeNode>();
     if (DEBUG) {
         try {
             const books = await search(bookName, 0);
-            bookList.push(...books);
+            bookList.push(...books);   
         } catch (error) { }
     } else {
         for (let id = 0; id < source.length; id++) {
@@ -31,7 +35,18 @@ export async function searchOnline() {
             } catch (error) { }
         }
     }
-    treeDataProvider.setData(bookList).refresh();
+    bookList.forEach(book => {
+        const bookKey: string = `${book.getName()}-${book.getAuthor()}`;
+        let bookNameNode = bookNameCollect.get(bookKey);
+        if (!bookNameNode) {
+            bookNameNode = new BookNameTreeNode(bookKey, book.getAuthor())
+            bookNameCollect.set(bookKey, bookNameNode);
+        } 
+        const bookSiteNode = new BookSiteTreeNode(book.siteName, book.getRuleId(), book.getBookId(), bookNameNode);
+        bookNameNode.addChildren(bookSiteNode);
+    });
+    // 将bookNameCollect.values() 转换为TreeNode数组
+    treeDataProvider.setData(Array.from(bookNameCollect.values())).refresh();
 };
 
 export async function openReaderView(node: TreeNode) {

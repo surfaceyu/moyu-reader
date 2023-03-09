@@ -1,83 +1,83 @@
 {
-  "name": "vsc-plugin-e-reader",
-  "displayName": "摸鱼Reader",
-  "description": "novel reader",
-  "version": "0.0.9",
-  "engines": {
-    "vscode": "^1.27.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "*"
-  ],
-  "publisher": "ginkgo",
-  "repository": "https://github.com/surfaceyu/moyu-reader.git",
-  "main": "./out/extension.js",
-  "contributes": {
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "eReader",
-          "title": "小说",
-          "icon": "./static/images/icon.svg"
-        }
-      ]
+    "name": "vsc-plugin-e-reader",
+    "displayName": "摸鱼Reader",
+    "description": "novel reader",
+    "version": "0.0.10",
+    "engines": {
+        "vscode": "^1.27.0"
     },
-    "views": {
-      "eReader": [
-        {
-          "id": "eReader-menu",
-          "name": "目录"
-        }
-      ]
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "publisher": "ginkgo",
+    "repository": "https://github.com/surfaceyu/moyu-reader.git",
+    "main": "./out/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "eReader",
+                    "title": "小说",
+                    "icon": "./static/images/icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "eReader": [
+                {
+                    "id": "eReader-menu",
+                    "name": "目录"
+                }
+            ]
+        },
+        "menus": {
+            "view/title": [
+                {
+                    "command": "vsc-plugin-e-reader.command.search",
+                    "when": "view == eReader-menu",
+                    "group": "navigation@1"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "vsc-plugin-e-reader.command.search",
+                "title": "搜索",
+                "category": "eReader"
+            }
+        ]
     },
-    "menus": {
-      "view/title": [
-        {
-          "command": "vsc-plugin-e-reader.command.search",
-          "when": "view == eReader-menu",
-          "group": "navigation@1"
-        }
-      ]
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "publish": "node build.js --type=hotfix && vsce publish",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
     },
-    "commands": [
-      {
-        "command": "vsc-plugin-e-reader.command.search",
-        "title": "搜索",
-        "category": "eReader"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "publish": "vsce publish",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/glob": "^8.0.0",
-    "@types/iconv-lite": "^0.0.1",
-    "@types/mocha": "^10.0.0",
-    "@types/node": "16.x",
-    "@types/node-fetch": "^2.6.2",
-    "@types/vscode": "1.27",
-    "@typescript-eslint/eslint-plugin": "^5.42.0",
-    "@typescript-eslint/parser": "^5.42.0",
-    "@vscode/test-electron": "^2.2.0",
-    "eslint": "^8.26.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.1.0",
-    "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
-    "iconv-lite": "^0.6.3",
-    "jssoup": "^0.0.15",
-    "node-fetch": "^2.6.6"
-  }
+    "devDependencies": {
+        "@types/glob": "^8.0.0",
+        "@types/iconv-lite": "^0.0.1",
+        "@types/mocha": "^10.0.0",
+        "@types/node": "16.x",
+        "@types/node-fetch": "^2.6.2",
+        "@types/vscode": "1.27",
+        "@typescript-eslint/eslint-plugin": "^5.42.0",
+        "@typescript-eslint/parser": "^5.42.0",
+        "@vscode/test-electron": "^2.2.0",
+        "eslint": "^8.26.0",
+        "glob": "^8.0.3",
+        "mocha": "^10.1.0",
+        "typescript": "^4.8.4"
+    },
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.12",
+        "iconv-lite": "^0.6.3",
+        "jssoup": "^0.0.15",
+        "node-fetch": "^2.6.6"
+    }
 }

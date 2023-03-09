@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import { Commands } from '../config';
 import * as source from '../sour.json';
+import { getChapter } from '../driver/driver';
 
 export class TreeNode extends vscode.TreeItem {
-    private data;
-    private parent: TreeNode;
-    private childs: TreeNode[];
+    protected data;
+    protected parent: TreeNode;
+    protected childs: TreeNode[];
 
     constructor(data: any, collapsibleState: vscode.TreeItemCollapsibleState = vscode.TreeItemCollapsibleState.None) {
         super(data.name, collapsibleState);
@@ -13,29 +14,17 @@ export class TreeNode extends vscode.TreeItem {
         this.parent = this.data.parent;
         this.childs = [];
     }
-    get name(): string {
+    get text(): string {
         return this.data.name;
     }
-    get type() {
-        return this.data.type;
-    }
     get path(): string {
-        if (this.chapterId && this.parent && this.parent.bookId) {
-            const url = source[this.parent.ruleId].ruleContent.url;
-            return url.replace('{{bookId}}', this.parent.bookId)
-                .replace('{{chapterId}}', this.chapterId);
-        }
-        if (this.bookId) {
-            const url = source[this.ruleId].ruleToc.url;
-            return url.replace('{{bookId}}', this.bookId);
-        }
-        return "";
+        throw new Error("请去重写该方法");
     }
     get parentNode(): TreeNode {
         return this.parent;
     }
-    get children(): TreeNode[] {
-        return this.children;
+    public async getChildren(): Promise<TreeNode[]> {
+        return this.childs;
     }
     get ruleId(): number {
         return this.data.ruleId;
@@ -65,5 +54,68 @@ export class TreeNode extends vscode.TreeItem {
         const index = this.childs.indexOf(child);
         const next = index < this.childs.length - 1 ? this.childs[index + 1] : null;
         return next;
+    }
+}
+
+export class BookNameTreeNode extends TreeNode {
+    constructor(name: string, author: string) {
+        const data = {
+            name,
+            author,
+        };
+        super(data, vscode.TreeItemCollapsibleState.Collapsed);
+        this.parent = this.data.parent;
+    }
+    get text(): string {
+        return this.data.name;
+    }
+    get author(): string {
+        return this.data.author;
+    }
+}
+
+export class BookSiteTreeNode extends TreeNode {
+    constructor(name: string, ruleId: number, bookId: string, parent:TreeNode) {
+        const data = {name, ruleId, bookId};
+        super(data, vscode.TreeItemCollapsibleState.Collapsed);
+        this.parent = parent;
+    }
+    get text(): string {
+        return this.data.name;
+    }
+    get path(): string {
+        const url = source[this.ruleId].ruleToc.url;
+        return url.replace('{{bookId}}', this.bookId);
+    }
+    get ruleId(): number {
+        return this.data.ruleId;
+    }
+    public async getChildren(): Promise<TreeNode[]> {
+        return await getChapter(this);
+    }
+}
+
+// BookChapterTreeNode
+export class BookChapterTreeNode extends TreeNode {
+    constructor(name: string, ruleId: number, bookId: string, chapterId: string, parent:TreeNode) {
+        super({name, ruleId, bookId, chapterId}, vscode.TreeItemCollapsibleState.None);
+        this.parent = parent;
+    }
+    get text(): string {
+        return this.data.name;
+    }
+    get path(): string {
+        const url = source[this.ruleId].ruleContent.url;
+        return url.replace('{{bookId}}', this.bookId)
+            .replace('{{chapterId}}', this.chapterId);
+    }
+    get ruleId(): number {
+        return this.data.ruleId;
+    }
+    get bookId(): string {
+        return this.data.bookId;
+    }
+    get chapterId(): string {
+        return this.data.chapterId;
     }
 }
