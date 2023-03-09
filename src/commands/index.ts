@@ -28,25 +28,32 @@ export async function searchOnline() {
             bookList.push(...books);   
         } catch (error) { }
     } else {
-        for (let id = 0; id < source.length; id++) {
-            try {
-                const books = await search(bookName, id);
-                bookList.push(...books);
-            } catch (error) { }
-        }
+        const funcs: any[] = [];
+        source.forEach(async (item, id) => {
+            funcs.push(new Promise(async resolve => {
+                try {
+                    const books = await search(bookName, id);
+                    bookList.push(...books);
+                    resolve(books);
+                } catch (error) { }
+                resolve([]);
+            }));
+        });
+        Promise.all(funcs).then((res) => {
+            bookList.forEach(book => {
+                const bookKey: string = `${book.getName()}-${book.getAuthor()}`;
+                let bookNameNode = bookNameCollect.get(bookKey);
+                if (!bookNameNode) {
+                    bookNameNode = new BookNameTreeNode(bookKey, book.getAuthor())
+                    bookNameCollect.set(bookKey, bookNameNode);
+                } 
+                const bookSiteNode = new BookSiteTreeNode(book.siteName, book.getRuleId(), book.getBookId(), bookNameNode);
+                bookNameNode.addChildren(bookSiteNode);
+            });
+            // 将bookNameCollect.values() 转换为TreeNode数组
+            treeDataProvider.setData(Array.from(bookNameCollect.values())).refresh();
+        });
     }
-    bookList.forEach(book => {
-        const bookKey: string = `${book.getName()}-${book.getAuthor()}`;
-        let bookNameNode = bookNameCollect.get(bookKey);
-        if (!bookNameNode) {
-            bookNameNode = new BookNameTreeNode(bookKey, book.getAuthor())
-            bookNameCollect.set(bookKey, bookNameNode);
-        } 
-        const bookSiteNode = new BookSiteTreeNode(book.siteName, book.getRuleId(), book.getBookId(), bookNameNode);
-        bookNameNode.addChildren(bookSiteNode);
-    });
-    // 将bookNameCollect.values() 转换为TreeNode数组
-    treeDataProvider.setData(Array.from(bookNameCollect.values())).refresh();
 };
 
 export async function openReaderView(node: TreeNode) {
