@@ -7,3 +7,5 @@ export enum Commands {
 };
 
 export const DEBUG = false;
+
+export const DEBUG_INDEX = 3;

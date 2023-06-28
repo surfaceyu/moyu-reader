@@ -2,7 +2,7 @@
     "name": "vsc-plugin-e-reader",
     "displayName": "摸鱼Reader",
     "description": "novel reader",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "engines": {
         "vscode": "^1.27.0"
     },
@@ -79,5 +79,13 @@
         "iconv-lite": "^0.6.3",
         "jssoup": "^0.0.15",
         "node-fetch": "^2.6.6"
+    },
+    "resolutions": {
+        "**/typescript": {
+          "registry": "https://registry.npmjs.org/"
+        },
+        "**/mocha": {
+          "registry": "https://registry.npm.taobao.org/"
+        }
     }
 }

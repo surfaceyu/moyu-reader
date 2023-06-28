@@ -110,7 +110,7 @@
             "chapterName": "a",
             "chapterUrl": "href",
             "chapterIdReg": "^(.+)\\.html$",
-            "url": "https://www.81zw.com/book/{{bookId}}"
+            "url": "https://www.81zw.com/book/{{bookId}}/"
         },
         "searchUrl": "https://www.81zw.com/search.php?keyword={{key}}",
         "weight": 0
