@@ -2,7 +2,7 @@
     "name": "vsc-plugin-e-reader",
     "displayName": "摸鱼Reader",
     "description": "novel reader",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "engines": {
         "vscode": "^1.27.0"
     },
@@ -19,17 +19,21 @@
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "eReader",
+                    "id": "eReaderSearch",
                     "title": "小说",
                     "icon": "./static/images/icon.svg"
                 }
             ]
         },
         "views": {
-            "eReader": [
+            "eReaderSearch": [
+                {
+                    "id": "eReader-cache",
+                    "name": "收藏"
+                },
                 {
                     "id": "eReader-menu",
-                    "name": "目录"
+                    "name": "搜索"
                 }
             ]
         },
@@ -40,13 +44,33 @@
                     "when": "view == eReader-menu",
                     "group": "navigation@1"
                 }
+            ],
+            "view/item/context": [
+                {
+                    "command": "vsc-plugin-e-reader.command.delete",
+                    "when": "view == eReader-cache && viewItem == BookNameTreeNode"
+                },
+                {
+                    "command": "vsc-plugin-e-reader.command.cache",
+                    "when": "view == eReader-menu && viewItem == BookNameTreeNode"
+                }
             ]
         },
         "commands": [
             {
                 "command": "vsc-plugin-e-reader.command.search",
                 "title": "搜索",
-                "category": "eReader"
+                "category": "eReaderSearch"
+            },
+            {
+                "command": "vsc-plugin-e-reader.command.cache",
+                "title": "收藏",
+                "category": "eReaderSearch"
+            },
+            {
+                "command": "vsc-plugin-e-reader.command.delete",
+                "title": "删除",
+                "category": "eReaderSearch"
             }
         ]
     },
@@ -82,10 +106,10 @@
     },
     "resolutions": {
         "**/typescript": {
-          "registry": "https://registry.npmjs.org/"
+            "registry": "https://registry.npmjs.org/"
         },
         "**/mocha": {
-          "registry": "https://registry.npm.taobao.org/"
+            "registry": "https://registry.npm.taobao.org/"
         }
     }
 }

@@ -1,9 +1,13 @@
 import fetch from "node-fetch";
 import iconv = require('iconv-lite');
 import * as source from './sour.json';
+import * as cacheData from './cacheData.json';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { CacheBook } from "./treeExplorer/entity";
+
+export var CACHE_DATA: CacheBook[] = cacheData;
 
 export namespace utils {
     // utils toFix
@@ -35,6 +39,24 @@ export namespace utils {
         const charset = charsetMatch ? charsetMatch[1].toLowerCase() : 'utf-8';
         const html = iconv.decode(buffer, charset);
         return html;
+    }
+
+    // 保存收藏夹到json文件
+    export function saveCacheBook(cacheData: CacheBook[]) {
+         // 将Map转换为JSON字符串
+        const jsonStr = JSON.stringify(cacheData);
+         // 指定保存JSON文件的路径和名称
+        const fileName = 'cacheData.json';
+        const filePath = path.join(__dirname, fileName);
+         // 将JSON字符串写入文件
+        fs.writeFileSync(filePath, jsonStr, { flag: "w" });
+
+        CACHE_DATA = cacheData;
+    }
+
+    // 读取收藏夹的文件
+    export function getCacheBook(): CacheBook[] {
+        return CACHE_DATA;
     }
 }
 

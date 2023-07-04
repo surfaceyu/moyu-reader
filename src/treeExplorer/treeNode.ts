@@ -14,10 +14,17 @@ export class TreeNode extends vscode.TreeItem {
         this.parent = this.data.parent;
         this.childs = [];
     }
+
+    get name(): string {
+        return this.data.name;
+    }
     get text(): string {
         return this.data.name;
     }
     get path(): string {
+        throw new Error("请去重写该方法");
+    }
+    get siteName(): string {
         throw new Error("请去重写该方法");
     }
     get parentNode(): TreeNode {
@@ -72,6 +79,8 @@ export class BookNameTreeNode extends TreeNode {
     get author(): string {
         return this.data.author;
     }
+
+    contextValue = 'BookNameTreeNode'; //提供给 when 使用
 }
 
 export class BookSiteTreeNode extends TreeNode {
@@ -92,6 +101,9 @@ export class BookSiteTreeNode extends TreeNode {
     }
     public async getChildren(): Promise<TreeNode[]> {
         return await getChapter(this);
+    }
+    get siteName(): string {
+        return source[this.ruleId].bookSourceName;
     }
 }
 

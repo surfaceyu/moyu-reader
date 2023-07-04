@@ -1,6 +1,5 @@
-import * as vscode from 'vscode';
 import * as cheerio from 'cheerio';
-import { BookChapterTreeNode, BookNameTreeNode, TreeNode } from "../treeExplorer/treeNode";
+import { BookChapterTreeNode, TreeNode } from "../treeExplorer/treeNode";
 import * as source from '../sour.json';
 import { utils } from '../utils';
 import { Book } from '../treeExplorer/entity';

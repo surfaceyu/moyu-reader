@@ -1,21 +1,31 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import path = require('path');
 import * as vscode from 'vscode';
 import * as commands from './commands';
 import { Commands } from './config';
-import { treeDataProvider } from './treeExplorer/bookTreeDataProvider';
+import { utils } from './utils';
+import { BookNameTreeNode } from './treeExplorer/treeNode';
+import { treeCacheDataProvider, treeDataProvider } from './treeExplorer/bookTreeDataProvider';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	// 搜索
 	vscode.commands.registerCommand(Commands.search, () => {
 		commands.searchOnline();
 	});
+
 	vscode.commands.registerCommand(Commands.openReaderView, commands.openReaderView);
+	// 注册命令
+	vscode.commands.registerCommand(Commands.onCache, (bookNode: BookNameTreeNode) => {
+		commands.onCache(bookNode);
+	});
+	vscode.commands.registerCommand(Commands.onDeleteCache, (bookNode: BookNameTreeNode) => {
+		commands.onDeleteCache(bookNode);
+	});
 
 	vscode.window.registerTreeDataProvider('eReader-menu', treeDataProvider);
+	vscode.window.registerTreeDataProvider('eReader-cache', treeCacheDataProvider);
 
 	// 创建上一页按钮
 	const prevButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
@@ -34,6 +44,9 @@ export function activate(context: vscode.ExtensionContext) {
 	const nextCommand = vscode.commands.registerCommand(Commands.onNextClick, commands.onNextClick);
 
 	context.subscriptions.push(prevButton, nextButton, prevCommand, nextCommand);
+	
+	let cacheData = await utils.getCacheBook();
+	commands.onUpdateCacheView(cacheData);
 }
 
 // This method is called when your extension is deactivated

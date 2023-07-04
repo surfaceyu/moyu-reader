@@ -37,3 +37,33 @@ export class Book {
 export class Chapter {
 
 }
+
+export class CacheBook {
+    public name: string;
+    public author: string;
+    public children: CacheBookSite[];
+
+    constructor(name: string, author: string) {
+        this.name = name;
+        this.author = author;
+        this.children = [];
+    }
+
+    addChildren(bs: CacheBookSite) {
+        this.children.push(bs);
+    };
+}
+
+export class CacheBookSite {
+    public ruleId: number;
+    public bookId: string;
+
+    constructor(ruleId: number, bookId: string) {
+        this.ruleId = ruleId;
+        this.bookId = bookId;
+    }
+
+    get siteName(): string {
+        return sites[this.ruleId].bookSourceName;
+    }
+}
