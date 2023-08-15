@@ -1,7 +1,6 @@
 import * as cheerio from 'cheerio';
 import { BookChapterTreeNode, TreeNode } from "../treeExplorer/treeNode";
-import * as source from '../sour.json';
-import { utils } from '../utils';
+import { utils, source } from '../utils';
 import { Book } from '../treeExplorer/entity';
 
 export async function search(bookName: string, id: number): Promise<Book[]> {

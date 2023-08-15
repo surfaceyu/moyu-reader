@@ -1,4 +1,4 @@
-import * as sites from '../sour.json';
+import { source as sites } from '../utils';
 
 export class Book {
     private name: string;

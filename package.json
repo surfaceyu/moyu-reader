@@ -2,7 +2,7 @@
     "name": "vsc-plugin-e-reader",
     "displayName": "摸鱼Reader",
     "description": "novel reader",
-    "version": "0.0.15",
+    "version": "0.0.17",
     "engines": {
         "vscode": "^1.27.0"
     },
@@ -16,6 +16,17 @@
     "repository": "https://github.com/surfaceyu/moyu-reader.git",
     "main": "./out/extension.js",
     "contributes": {
+        "configuration": [
+            {
+                "title": "书源配置",
+                "properties": {
+                    "moYuReader.sitePath": {
+                        "type": "string",
+                        "default": "./sour.json"
+                    }
+                }
+            }
+        ],
         "viewsContainers": {
             "activitybar": [
                 {

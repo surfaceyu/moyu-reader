@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Commands } from '../config';
-import * as source from '../sour.json';
+import { source } from '../utils';
 import { getChapter } from '../driver/driver';
 
 export class TreeNode extends vscode.TreeItem {

@@ -1,13 +1,34 @@
 import fetch from "node-fetch";
 import iconv = require('iconv-lite');
-import * as source from './sour.json';
+// import * as source from './sour.json';
 import * as cacheData from './cacheData.json';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { CacheBook } from "./treeExplorer/entity";
 
+export var source: any[];
 export var CACHE_DATA: CacheBook[] = cacheData;
+
+// 获取配置值
+const config = vscode.workspace.getConfiguration();
+const sitePath: string = config.get('moYuReader.sitePath', "./sour.json");
+
+function loadConfig(path: string) {
+    fs.readFile(path, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        try {
+            source = JSON.parse(data);
+        } catch (error) {
+            console.error('Invalid JSON file:', error);
+        }
+    });
+}
+loadConfig(path.isAbsolute(sitePath) ? sitePath : path.join(__dirname, sitePath));
 
 export namespace utils {
     // utils toFix
@@ -32,7 +53,7 @@ export namespace utils {
     }
 
     export async function fetchWithCharset(url: string): Promise<string> {
-        const response = await fetch(url, {timeout: 10*1000});
+        const response = await fetch(url, { timeout: 10 * 1000 });
         const buffer = await response.buffer();
         const contentType = response.headers.get('content-type');
         const charsetMatch = contentType ? contentType.match(/charset=(.*)/i) : "";
@@ -43,12 +64,12 @@ export namespace utils {
 
     // 保存收藏夹到json文件
     export function saveCacheBook(cacheData: CacheBook[]) {
-         // 将Map转换为JSON字符串
+        // 将Map转换为JSON字符串
         const jsonStr = JSON.stringify(cacheData);
-         // 指定保存JSON文件的路径和名称
+        // 指定保存JSON文件的路径和名称
         const fileName = 'cacheData.json';
         const filePath = path.join(__dirname, fileName);
-         // 将JSON字符串写入文件
+        // 将JSON字符串写入文件
         fs.writeFileSync(filePath, jsonStr, { flag: "w" });
 
         CACHE_DATA = cacheData;
@@ -178,9 +199,9 @@ function controlFlowAnalysisWithNever(foo: Foo) {
         let codeCopy = code; // 复制一份代码
         for (let j = 0; j < matches.length; j++) {
             // 替换注释
-            if (i <  strings.length) {
+            if (i < strings.length) {
                 codeCopy = codeCopy.replace(matches[j], "// " + strings[i]);
-                i++;                
+                i++;
             } else {
                 codeCopy = codeCopy.replace(matches[j], "");
             }

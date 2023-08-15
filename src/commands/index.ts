@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
-import * as source from '../sour.json';
 import { getContent, search } from '../driver/driver';
 import { treeCacheDataProvider, treeDataProvider } from '../treeExplorer/bookTreeDataProvider';
 import { BookNameTreeNode, BookSiteTreeNode, TreeNode } from '../treeExplorer/treeNode';
-import { render, utils } from '../utils';
+import { render, utils, source } from '../utils';
 import { Commands, DEBUG, DEBUG_INDEX } from '../config';
 import { Book, CacheBook, CacheBookSite } from '../treeExplorer/entity';
 

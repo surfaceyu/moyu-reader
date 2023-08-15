@@ -60,13 +60,13 @@
     {
         "bookSourceComment": "biquzw",
         "bookSourceName": "笔尖中文",
-        "bookSourceUrl": "https://www.biquzw.la/",
+        "bookSourceUrl": "https://www.biquzw.info/",
         "ruleContent": {
             "content": "#content",
             "replaceRegex": "@js:result.replace(/(^|\\n)[^🌕]*🌕/g,\"\\n\")",
             "sourceRegex": "",
             "webJs": "",
-            "url": "https://www.xbiquwx.la/{{bookId}}/{{chapterId}}.html"
+            "url": "https://www.xbiquwx.info/{{bookId}}/{{chapterId}}.html"
         },
         "ruleSearch": {
             "author": "td.odd:eq(1)",
@@ -81,9 +81,9 @@
             "chapterName": "a",
             "chapterUrl": "href",
             "chapterIdReg": "^(.+)\\.html$",
-            "url": "https://www.xbiquwx.la/{{bookId}}"
+            "url": "https://www.xbiquwx.info/{{bookId}}"
         },
-        "searchUrl": "https://www.xbiquwx.la/modules/article/search.php?searchkey={{key}}",
+        "searchUrl": "https://www.xbiquwx.info/modules/article/search.php?searchkey={{key}}",
         "weight": 0
     },
     {
