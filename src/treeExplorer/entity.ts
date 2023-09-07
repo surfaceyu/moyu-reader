@@ -1,4 +1,4 @@
-import { source as sites } from '../utils';
+import { utils } from '../utils';
 
 export class Book {
     private name: string;
@@ -30,6 +30,7 @@ export class Book {
         return this.ruleId;
     }
     get siteName(): string {
+        const sites = utils.getRule();
         return sites[this.ruleId].bookSourceName;
     }
 }
@@ -64,6 +65,7 @@ export class CacheBookSite {
     }
 
     get siteName(): string {
+        const sites = utils.getRule();
         return sites[this.ruleId].bookSourceName;
     }
 }

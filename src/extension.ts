@@ -10,6 +10,8 @@ import { treeCacheDataProvider, treeDataProvider } from './treeExplorer/bookTree
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
+	await utils.init();
+
 	// 搜索
 	vscode.commands.registerCommand(Commands.search, () => {
 		commands.searchOnline();

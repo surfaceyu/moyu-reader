@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Commands } from '../config';
-import { source } from '../utils';
+import { utils } from '../utils';
 import { getChapter } from '../driver/driver';
 
 export class TreeNode extends vscode.TreeItem {
@@ -93,6 +93,7 @@ export class BookSiteTreeNode extends TreeNode {
         return this.data.name;
     }
     get path(): string {
+        const source = utils.getRule();
         const url = source[this.ruleId].ruleToc.url;
         return url.replace('{{bookId}}', this.bookId);
     }
@@ -103,6 +104,7 @@ export class BookSiteTreeNode extends TreeNode {
         return await getChapter(this);
     }
     get siteName(): string {
+        const source = utils.getRule();
         return source[this.ruleId].bookSourceName;
     }
 }
@@ -117,6 +119,7 @@ export class BookChapterTreeNode extends TreeNode {
         return this.data.name;
     }
     get path(): string {
+        const source = utils.getRule();
         const url = source[this.ruleId].ruleContent.url;
         return url.replace('{{bookId}}', this.bookId)
             .replace('{{chapterId}}', this.chapterId);

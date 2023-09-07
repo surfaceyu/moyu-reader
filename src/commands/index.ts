@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { getContent, search } from '../driver/driver';
 import { treeCacheDataProvider, treeDataProvider } from '../treeExplorer/bookTreeDataProvider';
 import { BookNameTreeNode, BookSiteTreeNode, TreeNode } from '../treeExplorer/treeNode';
-import { render, utils, source } from '../utils';
+import { render, utils } from '../utils';
 import { Commands, DEBUG, DEBUG_INDEX } from '../config';
 import { Book, CacheBook, CacheBookSite } from '../treeExplorer/entity';
 
@@ -28,6 +28,7 @@ export async function searchOnline() {
             bookList.push(...books);
         } catch (error) { }
     } else {
+        const source = utils.getRule();
         source.forEach(async (item, id) => {
             funcs.push(new Promise(async resolve => {
                 try {

@@ -1,9 +1,10 @@
 import * as cheerio from 'cheerio';
 import { BookChapterTreeNode, TreeNode } from "../treeExplorer/treeNode";
-import { utils, source } from '../utils';
+import { utils } from '../utils';
 import { Book } from '../treeExplorer/entity';
 
 export async function search(bookName: string, id: number): Promise<Book[]> {
+    const source = utils.getRule();
     const sourceItem = source[id];
     const searchUrl = utils.addUrlPrefix(sourceItem.searchUrl, sourceItem.bookSourceUrl).replace('{{key}}', encodeURIComponent(bookName));
     const html = await utils.fetchWithCharset(searchUrl);

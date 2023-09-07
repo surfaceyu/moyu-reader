@@ -1,36 +1,46 @@
 import fetch from "node-fetch";
 import iconv = require('iconv-lite');
-// import * as source from './sour.json';
 import * as cacheData from './cacheData.json';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { CacheBook } from "./treeExplorer/entity";
 
-export var source: any[];
-export var CACHE_DATA: CacheBook[] = cacheData;
+var source: any[];
+export var CACHE_DATA: any[] = cacheData;
 
 // 获取配置值
 const config = vscode.workspace.getConfiguration();
 const sitePath: string = config.get('moYuReader.sitePath', "./sour.json");
 
 function loadConfig(path: string) {
-    fs.readFile(path, 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-
-        try {
-            source = JSON.parse(data);
-        } catch (error) {
-            console.error('Invalid JSON file:', error);
-        }
-    });
+    const data = fs.readFileSync(path, 'utf8');
+    try {
+        source = JSON.parse(data);
+    } catch (error) {
+        console.error('Invalid JSON file:', error);
+    }
 }
-loadConfig(path.isAbsolute(sitePath) ? sitePath : path.join(__dirname, sitePath));
+async function loadHttpConfig() {
+    try {
+        const response = await fetch("https://gitee.com/surfaceyu/moyu-reader-rule/raw/master/rule.json", { timeout: 10 * 1000 });
+        source = JSON.parse(await response.text());
+    } catch (error) {
+        console.error('Invalid JSON file:', error);
+    }
+}
 
 export namespace utils {
+    export async function init() {
+        await loadHttpConfig();
+    }
+    export function getRule(): any[] {
+        if (!source) {
+            loadConfig(path.isAbsolute(sitePath) ? sitePath : path.join(__dirname, sitePath));
+        }
+        return source;
+    }
+
     // utils toFix
     export function getSearchRule(searchId: number) {
         return source[searchId].ruleSearch;

@@ -2,7 +2,7 @@
     "name": "vsc-plugin-e-reader",
     "displayName": "摸鱼Reader",
     "description": "novel reader",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "engines": {
         "vscode": "^1.27.0"
     },
